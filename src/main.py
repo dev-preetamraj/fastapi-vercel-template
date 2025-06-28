@@ -1,28 +1,11 @@
-import asyncio
 from fastapi import FastAPI
-from contextlib import asynccontextmanager
-
-from src.example_bg_task import write_random_log, background_task_running
 from src import routers as app_router
+from src.cron_handler import router as cron_router
 
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Startup
-    print("Starting background log task...")
-    asyncio.create_task(write_random_log())
-    yield
-
-    # Shutdown
-    global background_task_running
-    background_task_running = False
-    print("Background log task stopped.")
-
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 app.include_router(app_router.router)
-
+app.include_router(cron_router, prefix="/api")
 
 @app.get("/", tags=["Home"])
 async def root():
