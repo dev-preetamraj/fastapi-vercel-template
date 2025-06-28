@@ -46,7 +46,7 @@ async def write_random_log():
             print(f"Log entry written: {log_entry.strip()}")
             
             # Wait for 5 minutes (300 seconds)
-            await asyncio.sleep(300)
+            await asyncio.sleep(30)
             
         except Exception as e:
             print(f"Error in background task: {e}")
